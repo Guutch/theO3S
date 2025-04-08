@@ -14,7 +14,7 @@ mongoose.connect(process.env.MONGO_URI, {
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Import the Item model from models/Item.js
-const Item = require('./models/Item');
+const Item = require('.src/backend/models/Item');
 
 // API route to fetch data
 app.get('/api/items', async (req, res) => {
