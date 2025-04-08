@@ -1,13 +1,36 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const path = require('path');
+require('dotenv').config();
+
 const app = express();
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'build')));
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-// The "catchall" handler: for any request that doesn't match, send back React's index.html.
+// Import the Item model from models/Item.js
+const Item = require('./models/Item');
+
+// API route to fetch data
+app.get('/api/items', async (req, res) => {
+  try {
+    const items = await Item.find({});
+    res.json(items);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+// Serve static files from React's build folder
+app.use(express.static(path.join(__dirname, 'src/frontend/build')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'src/frontend/build', 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
