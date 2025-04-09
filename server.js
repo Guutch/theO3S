@@ -19,6 +19,9 @@ const Item = require('./src/backend/models/Item');
 // API route to fetch data
 app.get('/api/items', async (req, res) => {
   try {
+    const count = await Item.countDocuments({});
+    console.log('Item count:', count);
+
     const items = await Item.find({});
     res.json(items);
   } catch (err) {

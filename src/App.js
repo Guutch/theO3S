@@ -4,20 +4,10 @@ function App() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    // Automatically add an item
-    fetch('/api/items', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: 'Auto-added Item' })
-    })
-      .then((res) => res.json())
-      .then(() => {
-        // After adding, fetch the updated list of items
-        return fetch('/api/items');
-      })
+    fetch('/api/items') 
       .then((res) => res.json())
       .then((data) => setItems(data))
-      .catch((err) => console.error('Error:', err));
+      .catch((err) => console.error(err));
   }, []);
 
   return (
