@@ -5,22 +5,21 @@ function App() {
   const [seeded, setSeeded] = useState(false);
 
   // Seed the user data via POST /api/users/seed
-  useEffect(() => {
-    fetch('/api/users/seed', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log("Seeded users:", data);
-        setSeeded(true);
-      })
-      .catch(err => console.error("Error seeding users:", err));
-  }, []);
+  // useEffect(() => {
+  //   fetch('/api/users/seed', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' }
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log("Seeded users:", data);
+  //       setSeeded(true);
+  //     })
+  //     .catch(err => console.error("Error seeding users:", err));
+  // }, []);
 
   // After seeding, GET all users
   useEffect(() => {
-    if (!seeded) return;
     fetch('/api/users')
       .then(res => res.json())
       .then(data => {
