@@ -19,7 +19,7 @@ const NewItem = require('./src/backend/models/NewItem');
 const Item = require('./src/backend/models/Item');
 
 // Use the users API route
-const usersRoutes = require('./backend/routes/users');
+const usersRoutes = require('./src/backend/routes/users');
 app.use('/api/users', usersRoutes);
 
 // POST endpoint: add a new item to newitems collection
