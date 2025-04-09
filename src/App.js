@@ -1,50 +1,71 @@
 import React, { useEffect, useState } from 'react';
 
 function App() {
-  const [items, setItems] = useState([]);
-  const [added, setAdded] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [seeded, setSeeded] = useState(false);
 
-  // POST a new item to /api/newitems
+  // POST the seed user data
   useEffect(() => {
-    fetch('/api/newitems', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: "Test Item",
-        description: "This is a test description"
-      })
-    })
-      .then(res => res.json())
+    const seedData = [
+      {
+        email: "test@example.com",
+        secret_key: "supersecret",
+        name: "Test User",
+        role: "admin",
+        created_at: "2025-02-21T15:49:15.662Z",
+        updated_at: "2025-02-21T15:49:15.662Z"
+      },
+      {
+        email: "simonhutch1611@gmail.com",
+        secret_key: "12345",
+        name: "Simon Hutchinson",
+        role: "admin",
+        created_at: "2025-02-12T23:29:50.095Z",
+        updated_at: "2025-02-12T23:29:50.095Z"
+      }
+    ];
+
+    Promise.all(
+      seedData.map(user =>
+        fetch('/api/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(user)
+        }).then(res => res.json())
+      )
+    )
       .then(data => {
-        console.log("Added new item:", data);
-        setAdded(true);
+        console.log("Seeded users:", data);
+        setSeeded(true);
       })
-      .catch(err => console.error("POST error:", err));
+      .catch(err => console.error("Error seeding users:", err));
   }, []);
 
-  // GET all newitems after adding a new document
+  // GET all users after seeding
   useEffect(() => {
-    if (!added) return; // wait until a new item is added
-    fetch('/api/newitems')
+    if (!seeded) return;
+    fetch('/api/users')
       .then(res => res.json())
       .then(data => {
-        console.log("Fetched new items:", data);
-        setItems(data);
+        console.log("Fetched users:", data);
+        setUsers(data);
       })
-      .catch(err => console.error("GET error:", err));
-  }, [added]);
+      .catch(err => console.error("Error fetching users:", err));
+  }, [seeded]);
 
   return (
     <div>
-      <h1>New Items</h1>
-      {items.length ? (
+      <h1>Users</h1>
+      {users.length ? (
         <ul>
-          {items.map(item => (
-            <li key={item._id}>{item.name}: {item.description}</li>
+          {users.map(user => (
+            <li key={user._id}>
+              {user.name} - {user.email} - {user.role}
+            </li>
           ))}
         </ul>
       ) : (
-        <p>No items found.</p>
+        <p>No users found.</p>
       )}
     </div>
   );
