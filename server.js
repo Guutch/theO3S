@@ -19,28 +19,16 @@ const Item = require('./src/backend/models/Item');
 // API route to fetch data
 app.get('/api/items', async (req, res) => {
   try {
-    const collections = await mongoose.connection.db.listCollections().toArray();
-    console.log(collections)
-    const collectionNames = collections.map(col => col.name);
-    console.log(collectionNames)
-    res.json(collectionNames);
+    // Directly fetch documents from the 'items' collection
+    const docs = await mongoose.connection.db.collection('items').find({}).toArray();
+    console.log("Fetched docs from items collection:", docs);
+    res.json(docs);
   } catch (err) {
-    console.error("Error listing collections:", err);
+    console.error("Error fetching docs:", err);
     res.status(500).send("Server error");
   }
-  // try {
-  //   console.log("Received request for /api/items");
-  //   const count = await Item.countDocuments({});
-  //   console.log('Item count:', count);
-
-  //   const items = await Item.find({});
-  //   console.log("Fetched items:", items);
-  //   res.json(items);
-  // } catch (err) {
-  //   console.error("Error fetching items:", err);
-  //   res.status(500).send('Server error');
-  // }
 });
+
 
 
 // Serve static files from React's build folder
