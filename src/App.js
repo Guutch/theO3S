@@ -27,7 +27,7 @@ function App() {
         setUsers(data);
       })
       .catch(err => console.error("Error fetching users:", err));
-  }, [seeded]);
+  }, []);
 
   return (
     <div>
