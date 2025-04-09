@@ -20,7 +20,9 @@ const Item = require('./src/backend/models/Item');
 app.get('/api/items', async (req, res) => {
   try {
     const collections = await mongoose.connection.db.listCollections().toArray();
+    console.log(collections)
     const collectionNames = collections.map(col => col.name);
+    console.log(collectionNames)
     res.json(collectionNames);
   } catch (err) {
     console.error("Error listing collections:", err);
