@@ -4,11 +4,19 @@ function App() {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch('/api/items') 
-      .then((res) => res.json())
-      .then((data) => setItems(data))
-      .catch((err) => console.error(err));
+    console.log("Fetching items from /api/items...");
+    fetch('/api/items')
+      .then((res) => {
+        console.log("Response status:", res.status);
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Data received:", data);
+        setItems(data);
+      })
+      .catch((err) => console.error("Fetch error:", err));
   }, []);
+  
 
   return (
     <div>

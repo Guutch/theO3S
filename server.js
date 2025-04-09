@@ -19,16 +19,19 @@ const Item = require('./src/backend/models/Item');
 // API route to fetch data
 app.get('/api/items', async (req, res) => {
   try {
+    console.log("Received request for /api/items");
     const count = await Item.countDocuments({});
     console.log('Item count:', count);
 
     const items = await Item.find({});
+    console.log("Fetched items:", items);
     res.json(items);
   } catch (err) {
-    console.error(err);
+    console.error("Error fetching items:", err);
     res.status(500).send('Server error');
   }
 });
+
 
 // Serve static files from React's build folder
 app.use(express.static(path.join(__dirname, 'build')));
