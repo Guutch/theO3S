@@ -5,35 +5,56 @@ require('dotenv').config();
 
 const app = express();
 
+// Use JSON body parser
+app.use(express.json());
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
+  useUnifiedTopology: true
 })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-// Import the Item model from models/Item.js
-const Item = require('./src/backend/models/Item');
+const NewItem = require('./models/NewItem');
 
-// API route to fetch data
-app.get('/api/items', async (req, res) => {
+// POST endpoint: add a new item to newitems collection
+app.post('/api/newitems', async (req, res) => {
   try {
-    // Directly fetch documents from the 'items' collection
-    const docs = await mongoose.connection.db.collection('Item').find({}).toArray();
-    const docs2 = await mongoose.connection.db.collection('Items').find({}).toArray();
-    const docs3 = await mongoose.connection.db.collection('items').find({}).toArray();
-    console.log("Fetched docs from items collection:", docs);
-    console.log("Fetched docs from items collection:", docs2);
-    console.log("Fetched docs from items collection:", docs3);
-    res.json(docs);
+    const { name, description } = req.body;
+    const newItem = new NewItem({ name, description });
+    await newItem.save();
+    console.log("New item added:", newItem);
+    res.status(201).json(newItem);
   } catch (err) {
-    console.error("Error fetching docs:", err);
+    console.error("Error adding new item:", err);
     res.status(500).send("Server error");
   }
 });
 
+// GET endpoint: fetch all documents from newitems collection
+app.get('/api/newitems', async (req, res) => {
+  try {
+    const items = await NewItem.find({});
+    console.log("Fetched new items:", items);
+    res.json(items);
+  } catch (err) {
+    console.error("Error fetching new items:", err);
+    res.status(500).send("Server error");
+  }
+});
 
+// (Optional) GET endpoint for existing items collection
+app.get('/api/items', async (req, res) => {
+  try {
+    const docs = await mongoose.connection.db.collection('Item').find({}).toArray();
+    console.log("Fetched docs from Item collection:", docs);
+    res.json(docs);
+  } catch (err) {
+    console.error("Error fetching items:", err);
+    res.status(500).send("Server error");
+  }
+});
 
 // Serve static files from React's build folder
 app.use(express.static(path.join(__dirname, 'build')));
