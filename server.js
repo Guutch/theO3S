@@ -5,7 +5,6 @@ require('dotenv').config();
 
 const app = express();
 
-// Use JSON body parser
 app.use(express.json());
 
 // Connect to MongoDB
