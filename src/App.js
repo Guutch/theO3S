@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import Sidebar from "./frontend/components/Sidebar"; // adjust path as needed
 
 function App() {
   const [users, setUsers] = useState([]);
   const [seeded, setSeeded] = useState(false);
 
-  // Seed the user data via POST /api/users/seed
-  // useEffect(() => {
-  //   fetch('/api/users/seed', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' }
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log("Seeded users:", data);
-  //       setSeeded(true);
-  //     })
-  //     .catch(err => console.error("Error seeding users:", err));
-  // }, []);
+   // Function to handle logging out (modify as needed)
+   const handleLogout = () => {
+    // your logout logic here
+    console.log("Logging out...");
+  };
 
   // After seeding, GET all users
   useEffect(() => {
@@ -32,6 +25,7 @@ function App() {
   return (
     <div>
       <h1>Users</h1>
+      <Sidebar onLogout={handleLogout} />
       {users.length ? (
         <ul>
           {users.map(user => (
