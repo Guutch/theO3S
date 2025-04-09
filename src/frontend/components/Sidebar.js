@@ -11,7 +11,7 @@ import {
 
 function Sidebar({ onLogout }) {
   return (
-    <div className="w-16 bg-white shadow-md h-screen flex flex-col justify-between items-center p-3">
+    <div className="w-16 bg-black shadow-md h-screen flex flex-col justify-between items-center p-3">
       {/* Group logo and nav in one container */}
       <div className="flex flex-col items-center space-y-6">
         {/* Logo */}
