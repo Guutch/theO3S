@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Sidebar from "./frontend/components/Sidebar"; // adjust path as needed
+import Sidebar from "./frontend/Components/Sidebar"; // adjust path as needed
 
 function App() {
   const [users, setUsers] = useState([]);
