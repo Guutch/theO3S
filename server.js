@@ -16,7 +16,8 @@ mongoose.connect(process.env.MONGO_URI, {
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-const NewItem = require('./models/NewItem');
+const NewItem = require('./src/backend/models/NewItem');
+const Item = require('./src/backend/models/Item');
 
 // POST endpoint: add a new item to newitems collection
 app.post('/api/newitems', async (req, res) => {
