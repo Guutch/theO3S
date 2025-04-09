@@ -20,8 +20,12 @@ const Item = require('./src/backend/models/Item');
 app.get('/api/items', async (req, res) => {
   try {
     // Directly fetch documents from the 'items' collection
-    const docs = await mongoose.connection.db.collection('items').find({}).toArray();
+    const docs = await mongoose.connection.db.collection('Item').find({}).toArray();
+    const docs2 = await mongoose.connection.db.collection('Items').find({}).toArray();
+    const docs3 = await mongoose.connection.db.collection('items').find({}).toArray();
     console.log("Fetched docs from items collection:", docs);
+    console.log("Fetched docs from items collection:", docs2);
+    console.log("Fetched docs from items collection:", docs3);
     res.json(docs);
   } catch (err) {
     console.error("Error fetching docs:", err);
